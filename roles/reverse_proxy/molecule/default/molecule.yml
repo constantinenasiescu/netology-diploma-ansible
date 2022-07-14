@@ -4,9 +4,9 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: centos7
-    image: milcom/centos7-systemd
-    privileged: true
+  - name: ubuntu
+    image: docker.io/pycontribs/ubuntu:latest
+    pre_build_image: true
 provisioner:
   name: ansible
 verifier:
