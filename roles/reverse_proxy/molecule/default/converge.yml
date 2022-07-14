@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include default.reverse_proxy"
+      include_role:
+        name: "default.reverse_proxy"

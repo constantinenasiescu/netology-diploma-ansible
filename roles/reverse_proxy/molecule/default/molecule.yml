@@ -1,0 +1,13 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: centos7
+    image: milcom/centos7-systemd
+    privileged: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

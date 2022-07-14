@@ -1,0 +1,14 @@
+---
+- name: install tools
+  apt: >
+    package={{ item }}
+    state=latest
+    update_cache=yes
+  with_items:
+    - nginx
+    - certbot
+    - python3-certbot-nginx
+- name: start nginx
+  service:
+     name: nginx
+     state: started
