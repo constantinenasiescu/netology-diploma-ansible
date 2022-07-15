@@ -1,2 +1,3 @@
 ---
 # defaults file for reverse_proxy
+domain_name: www.studywebservice.ru

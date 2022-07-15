@@ -1,14 +1,45 @@
 ---
-- name: install tools
-  apt: >
-    package={{ item }}
-    state=latest
-    update_cache=yes
-  with_items:
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+  become: yes
+  tags:
     - nginx
-    - certbot
-    - python3-certbot-nginx
-- name: start nginx
+  
+- name: Start nginx
   service:
      name: nginx
      state: started
+  tags: nginx
+  
+- name: Install letsencrypt
+  apt:
+    package: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - certbot
+    - python3-certbot-nginx
+  become: yes
+  tags: letsencrypt
+
+- name: Copy config file for studywebservice.ru
+  copy:
+    src: "{{ domain_name }}.conf"
+    dest: "/etc/nginx/conf.d/{{ domain_name }}.conf"
+  register: copy_reverse_proxy_conf_file
+  until: copy_reverse_proxy_conf_file is succeeded
+  become: yes
+  tags: nginx
+  
+- name: Restart nginx
+  service: 
+     name: nginx
+     state: restarted
+  become: yes
+  tags:
+    - letsencrypt
+    - nginx
+

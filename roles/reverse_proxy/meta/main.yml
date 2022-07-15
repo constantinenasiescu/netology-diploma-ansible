@@ -1,5 +1,6 @@
 galaxy_info:
   author: Constantine Nasiescu
+  role_name: reverse_proxy
   namespace: default
   description: Istall nginx and letsencrypt, create reverse proxy
   company: Netology

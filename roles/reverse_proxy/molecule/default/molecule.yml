@@ -6,8 +6,10 @@ driver:
 platforms:
   - name: ubuntu
     image: docker.io/pycontribs/ubuntu:latest
-    pre_build_image: true
+    privileged: True
 provisioner:
   name: ansible
 verifier:
   name: ansible
+  options:
+    sudo: true
