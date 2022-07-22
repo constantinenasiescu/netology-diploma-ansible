@@ -1,0 +1,10 @@
+---
+mysql_db: "wordpress"
+mysql_user: "wordpress"
+mysql_password: "wordpress"
+
+http_host: "appstudywebserviceru"
+http_conf: "appstudywebserviceru.conf"
+http_port: 80
+
+db_host: 

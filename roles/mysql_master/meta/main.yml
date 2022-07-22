@@ -2,7 +2,7 @@ galaxy_info:
   author: Constantine Nasiescu
   role_name: mysql_slave
   namespace: default
-  description: Istall nginx and letsencrypt, create reverse proxy
+  description: Configure master for MySQL replication
   company: Netology
 
   # If the issue tracker for your role is not on github, uncomment the

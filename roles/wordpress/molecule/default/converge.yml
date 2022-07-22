@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include default.wordpress"
+      include_role:
+        name: "default.wordpress"

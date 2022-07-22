@@ -9,3 +9,6 @@
   roles:
   - mysql
   - mysql_slave
+- hosts: app
+  roles:
+  - wordpress

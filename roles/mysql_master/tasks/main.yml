@@ -26,14 +26,3 @@
     - Restart mysql
   tags: mysql_slave
 
-- name: Uncomment server-id
-  lineinfile:
-    path: /etc/mysql/mysql.conf.d/mysqld.cnf
-    line: 'server-id = 1'
-    backup: yes
-  notify:
-    - Restart mysql
-  become: yes
-  tags: mysql_master
-  
-

@@ -1,8 +1,8 @@
 galaxy_info:
   author: Constantine Nasiescu
-  role_name: mysql_slave
+  role_name: wordpress
   namespace: default
-  description: Configure slave for MySQL replication
+  description: Istall wordpress
   company: Netology
 
   # If the issue tracker for your role is not on github, uncomment the

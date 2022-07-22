@@ -1,0 +1,100 @@
+---
+# tasks file for wordpress
+- name: Install prerequisites
+  apt: 
+    name: aptitude
+    update_cache: yes
+    state: latest
+    force_apt_get: yes
+  become: true
+  tags: [ wordpress ]
+
+- name: Install LAMP Packages
+  apt: 
+    name: [ 'apache2', 'php', 'php-mysql', 'libapache2-mod-php' ] 
+    update_cache: yes 
+    state: latest
+  become: true
+  tags: [ wordpress ]
+
+- name: Install PHP Extensions
+  apt: 
+    name: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
+    update_cache: yes
+    state: latest
+  become: true
+  tags: [ wordpress ]
+  
+- name: Create document root
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    owner: "www-data"
+    group: "www-data"
+    mode: '0755'
+  become: true
+  tags: [ apache ]
+
+- name: Create Apache VirtualHost
+  template:
+    src: "templates/apache.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+  notify: Reload Apache
+  become: true
+  tags: [ apache ]
+
+- name: Enable rewrite module
+  shell: /usr/sbin/a2enmod rewrite
+  notify: Reload Apache
+  become: true
+  tags: [ apache ]
+
+- name: Enable new site
+  shell: /usr/sbin/a2ensite {{ http_conf }}
+  notify: Reload Apache
+  become: true
+  tags: [ apache ]
+
+- name: Disable default Apache site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  notify: Restart Apache
+  become: true
+  tags: [ apache ]
+
+- name: Download and unpack latest WordPress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: "/var/www/{{ http_host }}"
+    remote_src: yes
+    creates: "/var/www/{{ http_host }}/wordpress"
+  become: true
+  tags: [ wordpress ]
+
+- name: Set owner
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    recurse: yes
+    owner: www-data
+    group: www-data
+  become: true
+  tags: [ wordpress ]
+
+- name: Set permissions for directories
+  shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type d -exec chmod 750 {} \\;"
+  become: true
+  tags: [ wordpress ]
+
+- name: Set permissions for files
+  shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type f -exec chmod 640 {} \\;"
+  become: true
+  tags: [ wordpress ]
+
+- name: Set up wp-config
+  template:
+    src: "templates/wp-config.php.j2"
+    dest: "/var/www/{{ http_host }}/wordpress/wp-config.php"
+  become: true
+  tags: [ wordpress ]
+
+
