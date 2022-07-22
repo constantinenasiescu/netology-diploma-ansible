@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include default.mysql_master"
+      include_role:
+        name: "default.mysql_master"

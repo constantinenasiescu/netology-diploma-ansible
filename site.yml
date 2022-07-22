@@ -1,5 +1,11 @@
----
 - hosts: reverse_proxy
   roles:
   - reverse_proxy
-
+- hosts: db1
+  roles:
+  - mysql
+  - mysql_master
+- hosts: db2
+  roles:
+  - mysql
+  - mysql_slave

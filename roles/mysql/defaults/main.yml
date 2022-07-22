@@ -1,0 +1,5 @@
+---
+# defaults file for mysql
+db_user: wordpress
+db_pass: wordpress
+db_name: wordpress

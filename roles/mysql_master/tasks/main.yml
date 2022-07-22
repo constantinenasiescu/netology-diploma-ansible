@@ -1,0 +1,39 @@
+---
+# tasks file for mysql_master
+- name: Creating wordpress db
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+  become: yes
+  tags: mysql_master
+    
+- name: Creating mysql replication user
+  mysql_user:
+    name: "{{ rep_user }}"
+    password: "{{ rep_pass }}"
+    priv: '*.*:REPLICATION SLAVE,REPLICATION CLIENT'
+    host: '%'
+    state: present
+  become: yes
+  tags: mysql_master
+  
+- name: Copy config file
+  copy:
+    src: mysqld.cnf
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  become: true
+  notify:
+    - Restart mysql
+  tags: mysql_slave
+
+- name: Uncomment server-id
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    line: 'server-id = 1'
+    backup: yes
+  notify:
+    - Restart mysql
+  become: yes
+  tags: mysql_master
+  
+

@@ -1,0 +1,10 @@
+---
+db_user: wordpress
+db_pass: wordpress
+
+db_name: wordpress
+
+rep_user: rep_user
+rep_pass: rep_pass
+
+master_host:

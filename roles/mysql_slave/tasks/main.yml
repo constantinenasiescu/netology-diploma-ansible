@@ -1,0 +1,47 @@
+---
+# tasks file for mysql_slave
+- name: Start MySQL on slave
+  service:
+    name: mysql
+    state: started
+  become: true
+  tags: mysql_slave
+  
+- name: Creating wordpress db
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+  become: yes
+  tags: mysql_master
+  
+- name: Copy config file
+  copy:
+    src: mysqld.cnf
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  become: true
+  notify:
+    - Restart mysql
+  tags: mysql_slave
+  
+- name: Stop MySQL slave process
+  mysql_replication:
+    mode: stopslave
+  become: true
+  tags: mysql_slave
+    
+- name: Configure MySQL slave process
+  mysql_replication:
+    master_host: "{{ master_host }}"
+    master_user: "{{ rep_user }}"
+    master_password: "{{ rep_pass }}"
+    master_log_file: /var/log/mysql/mysql-bin.000001
+    mode: changemaster
+  become: true
+  tags: mysql_slave
+    
+- name: Start MySQL slave process
+  mysql_replication:
+    mode: startslave
+  become: true
+  tags: mysql_slave
+

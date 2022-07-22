@@ -1,0 +1,37 @@
+---
+ #tasks file for mysql
+- name: Installing Mysql and dependencies
+  apt:
+    package: ['mysql-server', 'mysql-client', 'python3-mysqldb']
+    state: latest
+    update_cache: yes
+  become: yes
+  tags: mysql
+
+- name: Start and enable mysql service
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  tags: mysql
+  
+- name: Creating default mysql user
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_pass }}"
+    priv: '*.*:ALL'
+    host: '%'
+    state: present
+  become: yes
+  tags: mysql
+
+- name: Uncomment log_bin
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    line: 'log_bin = /var/log/mysql/mysql-bin.log'
+    backup: yes
+  notify:
+    - Restart mysql
+  become: yes
+  tags: mysql
+    
