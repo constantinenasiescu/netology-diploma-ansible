@@ -1,0 +1,18 @@
+---
+# tasks file for node_exporter
+- name: Copy docker-compose
+  copy:
+    src: docker-compose.yaml
+    dest: "/opt/docker-compose.yaml"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  
+- name: Pull all images in compose
+  command: docker-compose -f /opt/docker-compose.yaml pull
+  become: true
+
+- name: Up all services in compose
+  command: docker-compose -f /opt/docker-compose.yaml up -d
+  become: true

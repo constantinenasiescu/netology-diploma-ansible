@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include diploma.monitoring"
+      include_role:
+        name: "diploma.monitoring"

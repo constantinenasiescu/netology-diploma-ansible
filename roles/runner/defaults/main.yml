@@ -1,0 +1,3 @@
+---
+# defaults file for runner
+ansible_distribution_release: focal

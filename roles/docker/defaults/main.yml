@@ -1,0 +1,3 @@
+---
+# defaults file for docker
+ansible_distribution_release: focal

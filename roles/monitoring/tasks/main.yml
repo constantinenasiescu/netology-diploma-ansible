@@ -1,0 +1,45 @@
+---
+# tasks file for monitoring
+- name: Copy docker-compose
+  copy:
+    src: docker-compose.yaml
+    dest: "/opt/docker-compose.yaml"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  
+- name: Copy alertmanager files
+  copy:
+    src: ./alertmanager
+    dest: "/opt"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  
+- name: Copy grafana files
+  copy:
+    src: ./grafana
+    dest: "/opt"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  
+- name: Copy prometheus files
+  copy:
+    src: ./prometheus
+    dest: "/opt"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  
+- name: Pull all images in compose
+  command: docker-compose -f /opt/docker-compose.yaml pull
+  become: true
+
+- name: Up all services in compose
+  command: docker-compose -f /opt/docker-compose.yaml up -d
+  become: true

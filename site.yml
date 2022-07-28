@@ -1,14 +1,36 @@
+- hosts: all
+  roles:
+  - docker
+  - node_exporter
+
 - hosts: reverse_proxy
   roles:
   - reverse_proxy
+
 - hosts: db1
   roles:
+  - docker
   - mysql
   - mysql_master
+
 - hosts: db2
   roles:
+  - docker
   - mysql
   - mysql_slave
+
 - hosts: app
   roles:
   - wordpress
+
+- hosts: gitlab
+  roles:
+  - gitlab
+
+- hosts: runner
+  roles:
+  - runner
+
+- hosts: monitoring
+  roles:
+  - monitoring

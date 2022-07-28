@@ -1,0 +1,52 @@
+---
+# tasks file for runner
+- name: Install dependencies
+  apt:
+    name:
+      - apt-transport-https 
+      - ca-certificates 
+      - curl 
+      - gnupg-agent 
+      - software-properties-common
+      - build-essential
+      - python3-pip
+    state: present
+    update-cache: yes
+  become: true
+
+- name: Immediately update pip
+  pip:
+    name:
+      - pip
+    state: latest
+  become: true
+
+- name: Install pip dependencies
+  pip:
+    name: 
+      - python-gitlab<=1.12.1
+      - virtualenv
+      - setuptools
+  become: true
+    
+- name: Install Docker Module for Python
+  pip:
+    name: docker
+  become: true
+
+- name: Add gitlab-runner user to docker group
+  user:
+    name: gitlab-runner
+    append: yes
+    groups: docker
+  become: true
+
+- name: Install gitlab runner
+  shell: |
+    curl -LJO https://gitlab-runner-downloads.s3.amazonaws.com/latest/deb/gitlab-runner_amd64.deb; \
+    dpkg -i gitlab-runner_amd64.deb
+  args:
+    creates: /usr/bin/gitlab-runner
+  become: true
+
+

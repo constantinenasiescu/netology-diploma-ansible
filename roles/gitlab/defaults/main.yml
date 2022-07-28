@@ -1,0 +1,46 @@
+---
+# defaults file for gitlab
+# General config.
+gitlab_domain: gitlab.studywebservice.ru
+gitlab_external_url: "https://{{ gitlab_domain }}/"
+gitlab_git_data_dir: "/var/opt/gitlab/git-data"
+gitlab_edition: "gitlab-ce"
+gitlab_version: ''
+gitlab_backup_path: "/var/opt/gitlab/backups"
+gitlab_config_template: "gitlab.rb.j2"
+
+# SSL Configuration.
+gitlab_redirect_http_to_https: false
+
+# Probably best to leave this as the default, unless doing testing.
+gitlab_restart_handler_failed_when: 'gitlab_restart.rc != 0'
+
+# Dependencies.
+gitlab_dependencies:
+  - openssh-server
+  - postfix
+  - curl
+  - openssl
+  - tzdata
+  - gnupg2
+
+# Optional settings.
+gitlab_time_zone: "UTC"
+gitlab_backup_keep_time: "604800"
+gitlab_download_validate_certs: true
+gitlab_default_theme: '2'
+
+# Email configuration.
+gitlab_email_enabled: false
+gitlab_email_from: "gitlab@example.com"
+gitlab_email_display_name: "Gitlab"
+gitlab_email_reply_to: "gitlab@example.com"
+
+# Registry configuration.
+gitlab_registry_enable: false
+
+# LetsEncrypt configuration.
+gitlab_letsencrypt_enable: false
+
+gitlab_package_version_separator: '='
+gitlab_repository_installation_script_url: "https://packages.gitlab.com/install/repositories/gitlab/{{ gitlab_edition }}/script.deb.sh"
